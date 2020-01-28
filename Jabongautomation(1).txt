@@ -1,0 +1,142 @@
+package demo.project;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class FlipKartDemo {
+
+	public static void main(String[] args) throws Throwable {
+		// TODO Auto-generated method stub
+
+		System.setProperty("webdriver.chrome.driver", "C:\\suresh\\Selenium Drivers\\chromedriver_win32\\chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
+
+		driver.manage().timeouts().pageLoadTimeout(50, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
+		driver.manage().deleteAllCookies();
+		driver.get(" https://www.jabong.com/");
+		driver.manage().window().maximize();
+		Thread.sleep(5000);
+		String titile=driver.findElement(By.xpath("//a[contains(text(),'Jabong')]")).getText();
+		System.out.println(titile);
+		if(titile.equalsIgnoreCase("Jabong")){
+			Thread.sleep(7000);
+			WebElement men=driver.findElement(By.xpath(" //li[@class='nav-men']//a[contains(text(),'men')]"));
+			Actions act = new Actions(driver);
+			act.moveToElement(men).perform();
+			Thread.sleep(5000);
+			driver.findElement(By.xpath("//a[text()='Backpacks']")).click();	
+			Thread.sleep(4000);
+			driver.findElement(By.xpath("//input[@id='search']")).sendKeys("wildkraft");
+			Thread.sleep(5000);
+			driver.findElement(By.xpath("//span[@class='top-search-icon hidden-xs']")).click();
+			Thread.sleep(5000);
+			List<WebElement> all=driver.findElements(By.xpath("//select[@class='form-control']"));
+			System.out.println(all.size());
+
+			WebElement price= all.get(1);
+
+			Select sel=new Select(price);
+			Thread.sleep(4000);
+			sel.selectByVisibleText("Price: Low to High");
+			Thread.sleep(5000);	  
+			String wildkart=driver.findElement(By.xpath("//span[contains(text(),'Wildcraft Wiki Unisex Red Solid Two Fold Wallet')]")).getText();
+
+			if(wildkart.contains("Wildcraft")){
+
+				System.out.println("The product contains wildcraft");
+			}
+			Thread.sleep(4000);
+			String LowestPrice= driver.findElement(By.xpath("//span[@class='standard-price'][contains(text(),'249')]")).getText();
+			String HighestPrice=driver.findElement(By.xpath(" //span[contains(text(),'349')]")).getText();
+			System.out.println(LowestPrice+"and "+HighestPrice);
+			int lp= Integer.parseInt(LowestPrice);
+			int hp=Integer.parseInt(HighestPrice);
+
+			if(lp<=hp){
+
+				System.out.println("The lowset price is less than highest price");
+			}
+			driver.findElement(By.xpath("//span[@class='standard-price'][contains(text(),'249')]")).click();
+			Thread.sleep(4000);
+			driver.findElement(By.xpath("//button[@id='add-to-cart']")).click();
+			Thread.sleep(5000);
+			String prover=driver.findElement(By.xpath("//div[@class='head']")).getText();
+			if (prover.equalsIgnoreCase("Wildcraft Wiki Unisex Red Solid Two Fold Wallet")){
+
+				System.out.println("The product added to cart successfully with one item");
+			}
+
+			else{
+				System.out.println("Not added!!");
+			}
+
+			//click on view bag and store totla [payment in var x1
+
+			WebElement viewBag = driver.findElement(By.xpath("//a[text()='View Bag']"));
+			viewBag.click();
+			String totalPayable = driver.findElement(By.xpath("//span[@class='rupee']")).getText();
+			String tp = totalPayable.replaceAll("[^\\d.]", "");
+			Double x1 = Double.parseDouble(tp);
+			System.out.println(x1);
+
+			//Click on continue shopping link
+			driver.findElement(By.xpath("//a[text()='Continue Shopping']")).click();
+			Thread.sleep(5000);
+
+			WebElement search= driver.findElement(By.xpath("//input[@id='search']"));
+			search.clear();
+			search.sendKeys("SHOES & FOOTWEAR");
+			Thread.sleep(3000);
+			driver.findElement(By.xpath("//span[@class='top-search-icon hidden-xs']")).click(); 
+			Thread.sleep(5000);
+			driver.findElement(By.xpath("//div[contains(@class,'catalog-main')]//div[1]//a[1]//figure[1]//img[1]")).click();
+			Thread.sleep(50000);
+			driver.findElement(By.xpath("//button[contains(@class,'btn-popover size-button swatch-item')]//span[contains(text(),'6')]")).click();
+			Thread.sleep(3000);
+			driver.findElement(By.xpath("//button[@id='add-to-cart']")).click();
+			Thread.sleep(4000);
+			driver.findElement(By.xpath("//a[@class='btn btn-primary']")).click();
+			Thread.sleep(4000);
+			String total= 	 driver.findElement(By.xpath("//span[@class='rupee']")).getText();
+			String pt = total.replaceAll("[^\\d.]", "");
+			pt.substring(1, 4);
+			Double x2=Double.parseDouble(pt);
+			System.out.println(x2); 
+			if(x2>x1){
+
+				System.out.println("The price of x2 is greater than x2 so closed the browser>>>");
+				Thread.sleep(2000);
+				//
+				driver.close();
+
+			}
+
+		}
+
+
+	}
+
+
+
+
+
+
+
+
+
+}
+
