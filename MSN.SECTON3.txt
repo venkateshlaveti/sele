@@ -1,0 +1,80 @@
+package Myntrapackage;
+
+import java.util.concurrent.TimeUnit;
+
+import org.apache.bcel.generic.Select;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class Section3 {
+
+	public static void main(String[] args) throws Exception {
+		// TODO Auto-generated method stub
+		
+	System.setProperty("webdriver.chrome.driver", "C:\\Users\\SupriyaGodithi\\Desktop\\Personal\\ALL\\akhila\\Chromedriver.exe");
+	WebDriver  driver = new ChromeDriver();
+	
+	driver.get("https://www.msn.com/en-in/money");
+    driver.manage().window().maximize();
+    driver.manage().timeouts().pageLoadTimeout(20,TimeUnit.SECONDS);
+    
+    driver.findElement(By.linkText("money")).click();
+    WebDriverWait wait =new WebDriverWait(driver, 500);
+    
+    driver.findElement(By.xpath("//a[@href ='/en-in/money/tools/currencyconverter']")).click();
+    Thread.sleep(3000);
+
+    WebDriverWait wait1 =new WebDriverWait(driver, 500);
+    WebElement cur=driver.findElement(By.id("frmmenu"));
+    cur.click();
+    
+    org.openqa.selenium.support.ui.Select sel = new org.openqa.selenium.support.ui.Select(cur);
+    sel.selectByVisibleText("Australian Dollar");
+    Thread.sleep(1000);
+
+    WebElement dollar=driver.findElement(By.id("frmtxtbx"));
+    dollar.clear();
+    dollar.sendKeys("5");
+
+    for(int i=1;i<=7;i++)
+    {
+    	Actions actions = new Actions(driver);
+		actions.sendKeys(Keys.TAB).perform();
+		
+    }
+    Thread.sleep(4000);
+    
+    double x = 240.96;
+    
+    org.openqa.selenium.support.ui.Select sel1 = new org.openqa.selenium.support.ui.Select(cur);
+    sel.selectByVisibleText("United States Dollar");
+    Thread.sleep(1000);
+
+    WebElement dollar1=driver.findElement(By.id("frmtxtbx"));
+    dollar.clear();
+    dollar.sendKeys("5");
+    
+    for(int i=1;i<=7;i++)
+    {
+    	Actions actions = new Actions(driver);
+		actions.sendKeys(Keys.TAB).perform();
+		
+    }
+    Thread.sleep(4000);
+
+    double y = 356.13;
+    
+    if (x < y)
+    {
+    	double  amt=y-x;
+    	System.out.println("difference amount: "+amt);
+    	
+    }
+    driver.close(); 
+ }
+}
